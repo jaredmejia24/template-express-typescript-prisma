@@ -6,7 +6,7 @@ export const userExists: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const user: User | null = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: { id: Number(id), status: "active" },
     });
 
@@ -14,6 +14,7 @@ export const userExists: RequestHandler = async (req, res, next) => {
       throw new AppError("User Not Found", 404);
     }
 
+    //@ts-expect-error
     delete user.password;
 
     req.user = user;

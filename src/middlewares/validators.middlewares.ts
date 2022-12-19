@@ -39,3 +39,14 @@ export const createUserValidators = [
     .withMessage("Password must be at least 8 characters"),
   checkValidations,
 ];
+
+export const updateUserValidators = [
+  body("name")
+    .isString()
+    .withMessage("Name must be a string")
+    .notEmpty()
+    .withMessage("Name cannot be empty")
+    .isLength({ min: 3 })
+    .withMessage("Name must be at least 3 characters"),
+  checkValidations,
+];

@@ -1,10 +1,17 @@
+import express from "express";
+
+//middlewares
 import {
   protectAdmin,
   protectSession,
   protectUsersAccount,
 } from "./../middlewares/auth.middlwares";
-import { createUserValidators } from "./../middlewares/validators.middlewares";
-import express from "express";
+
+//validators
+import {
+  createUserValidators,
+  updateUserValidators,
+} from "./../middlewares/validators.middlewares";
 
 //controllers
 import {
@@ -15,6 +22,8 @@ import {
   deleteUser,
   login,
 } from "../controller/users.controller";
+
+//user middlewares
 import { userExists } from "../middlewares/users.middlewares";
 
 const usersRouter = express.Router();
@@ -26,13 +35,19 @@ usersRouter.post("/login", login);
 // Protecting below endpoints
 usersRouter.use(protectSession);
 
-usersRouter.get("/", getAllUsers);
-
-usersRouter.patch("/:id", userExists, protectUsersAccount, updateUser);
+usersRouter.patch(
+  "/:id",
+  userExists,
+  protectUsersAccount,
+  updateUserValidators,
+  updateUser
+);
 
 usersRouter.delete("/:id", userExists, protectUsersAccount, deleteUser);
 
 usersRouter.use(protectAdmin);
+
+usersRouter.get("/", getAllUsers);
 
 usersRouter.get("/:id", userExists, getUserById);
 

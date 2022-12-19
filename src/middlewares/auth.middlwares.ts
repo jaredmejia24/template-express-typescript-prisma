@@ -38,7 +38,7 @@ export const protectSession: RequestHandler = async (req, res, next) => {
     const decoded = jwt.verify(token, secret) as JwtPayload;
 
     // Verify the token's owner
-    const user: User | null = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: { id: decoded.id, status: "active" },
     });
 
@@ -46,6 +46,7 @@ export const protectSession: RequestHandler = async (req, res, next) => {
       throw new AppError("The owner of the session is no longer active", 403);
     }
 
+    //@ts-expect-error
     delete user.password;
     // Grant access
     req.sessionUser = user;
