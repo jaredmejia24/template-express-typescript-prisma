@@ -76,7 +76,7 @@ export const updateUser: RequestHandler = async (req, res, next) => {
     const { user } = req;
 
     const updatedUser = await prisma.user.update({
-      where: { id: user?.id },
+      where: { id: user.id },
       data: { name },
     });
 
@@ -97,7 +97,7 @@ export const deleteUser: RequestHandler = async (req, res, next) => {
     const { user } = req;
 
     await prisma.user.update({
-      where: { id: user?.id },
+      where: { id: user.id },
       data: { status: "disabled" },
     });
 
